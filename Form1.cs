@@ -279,31 +279,31 @@ namespace 写轴器
                 }
 
                 //BOSS信息
-                text = wsh.Cells[10, 2].Value.ToString();
+                string bossName = wsh.Cells[10, 2].Value.ToString();
                 unitIds.Insert(0, (int)wsh.Cells[10, 1].Value);
-                if (unitNames.Keys.Contains(text))
+                if (unitNames.Keys.Contains(bossName))
                 {
-                    wsh2.Cells[6, 3] = unitNames[text];
-                    units.Insert(0, unitNames[text]);
+                    wsh2.Cells[6, 3] = unitNames[bossName];
+                    units.Insert(0, unitNames[bossName]);
                 }
                 else
                 {
-                    wsh2.Cells[6, 3] = text;
-                    units.Insert(0, text);
+                    wsh2.Cells[6, 3] = bossName;
+                    units.Insert(0, bossName);
                 }
 
 
                 //设置角色头像
                 if (checkBox1.Checked)
                 {
-                    for (int i = 1; i <= unitIds.Count; i++)
+                    for (int i = 0; i < unitIds.Count; i++)
                     {
-                        int unitId = unitIds[i - 1];
+                        int unitId = unitIds[i];
                         unitId = unitId < 200000 ? unitId + 30 : unitId;
                         string path = System.Windows.Forms.Application.StartupPath + "/images/icon_unit_" + unitId.ToString() + ".png";
                         if (File.Exists(path))
                         {
-                            wsh2.Shapes.AddPicture(path, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoTrue, (float)(120.0 + (112.5 * (i == 1 ? 0 : 7 - i))), 101, 96, 96);
+                            wsh2.Shapes.AddPicture(path, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoTrue, (float)(120.0 + (112.5 * (i == 0 ? i : 6 - i))), 101, 96, 96);
                         }
                     }
                 }
@@ -373,27 +373,35 @@ namespace 写轴器
                                             }
                                         }
                                     }
-
-                                    foreach (Match mat in Regex.Matches(str, @"对目标造成(\d+)点(暴击)?伤害"))
+                                    Debug.WriteLine(str);
+                                    foreach (Match mat in Regex.Matches(str, @"目标：([^\,]+),对目标造成(\d+)点(暴击)?伤害"))
                                     {
-                                        int damage = int.Parse(mat.Groups[1].Value);
-                                        if (comboBox1.Text == "最高伤害" && wsh2.Cells[rowId, 8].Value < damage)
+                                        if(mat.Groups[1].Value.ToString() == bossName)
                                         {
-                                            wsh2.Cells[rowId, 8].Value = damage;
-                                            wsh2.Range["H" + rowId.ToString()].Font.Color = wsh2.Cells[rowId, 4] = mat.Groups[2].Value == "暴击" ? Color.FromArgb(255, 0, 0) : Color.FromArgb(0, 0, 0);
-                                        }else if (comboBox1.Text == "UB总伤害")
-                                        {
-                                            wsh2.Cells[rowId, 8].Value = (int)wsh2.Cells[rowId, 8].Value + damage;
-                                            if(mat.Groups[2].Value == "暴击")
+                                            int damage = int.Parse(mat.Groups[2].Value);
+                                            if (comboBox1.Text == "最高伤害" && wsh2.Cells[rowId, 8].Value < damage)
                                             {
-                                                wsh2.Range["H" + rowId.ToString()].Font.Color = wsh2.Cells[rowId, 4] = Color.FromArgb(255, 0, 0);
+                                                wsh2.Cells[rowId, 8].Value = damage;
+                                                wsh2.Range["H" + rowId.ToString()].Font.Color = wsh2.Cells[rowId, 4] = mat.Groups[3].Value == "暴击" ? Color.FromArgb(255, 0, 0) : Color.FromArgb(0, 0, 0);
+                                            }
+                                            else if (comboBox1.Text == "UB总伤害")
+                                            {
+                                                wsh2.Cells[rowId, 8].Value = (int)wsh2.Cells[rowId, 8].Value + damage;
+                                                if (mat.Groups[3].Value == "暴击")
+                                                {
+                                                    wsh2.Range["H" + rowId.ToString()].Font.Color = wsh2.Cells[rowId, 4] = Color.FromArgb(255, 0, 0);
+                                                }
+                                            }
+                                            if (comboBox1.Text == "最低伤害" && (wsh2.Cells[rowId, 8].Value > damage || wsh2.Cells[rowId, 8].Value == 0))
+                                            {
+                                                wsh2.Cells[rowId, 8].Value = damage;
+                                                wsh2.Range["H" + rowId.ToString()].Font.Color = wsh2.Cells[rowId, 4] = mat.Groups[3].Value == "暴击" ? Color.FromArgb(255, 0, 0) : Color.FromArgb(0, 0, 0);
                                             }
                                         }
-                                        if (comboBox1.Text == "最低伤害" && (wsh2.Cells[rowId, 8].Value > damage || wsh2.Cells[rowId, 8].Value == 0))
-                                        {
-                                            wsh2.Cells[rowId, 8].Value = damage;
-                                            wsh2.Range["H" + rowId.ToString()].Font.Color = wsh2.Cells[rowId, 4] = mat.Groups[2].Value == "暴击" ? Color.FromArgb(255, 0, 0) : Color.FromArgb(0, 0, 0);
-                                        }
+                                    }
+                                    if (checkBox2.Checked && wsh2.Cells[rowId, 8].Value == 0)
+                                    {
+                                        wsh2.Cells[rowId, 8].Value = null;
                                     }
                                 }
                                 else

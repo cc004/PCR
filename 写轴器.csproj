@@ -64,7 +64,8 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>LULU.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
@@ -129,7 +130,6 @@
     </Compile>
     <None Include="UBNameDic.json" />
     <None Include="UnitNameDic.json" />
-    <None Include="LULU.pfx" />
     <None Include="轴模板.xlsx" />
   </ItemGroup>
   <ItemGroup>
