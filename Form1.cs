@@ -294,32 +294,19 @@ namespace 写轴器
 
 
                 //设置角色头像
-                for (int i=1;i <= unitIds.Count; i++)
+                if (checkBox1.Checked)
                 {
-                    if (checkBox1.Checked)
+                    for (int i = 1; i <= unitIds.Count; i++)
                     {
-                        var pic = wsh2.Pictures(i);
-                        pic.Visible = false;
-                        double test = pic.Width;
                         int unitId = unitIds[i - 1];
                         unitId = unitId < 200000 ? unitId + 30 : unitId;
                         string path = System.Windows.Forms.Application.StartupPath + "/images/icon_unit_" + unitId.ToString() + ".png";
                         if (File.Exists(path))
                         {
-                            wsh2.Shapes.AddPicture(path, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoTrue, pic.Left, pic.Top, pic.Width, pic.Height);
+                            wsh2.Shapes.AddPicture(path, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoTrue, (float)(120.0 + (112.5 * (i == 1 ? 0 : 7 - i))), 101, 96, 96);
                         }
                     }
-                    else
-                    {
-                        wsh2.Pictures(i).Visible = false;
-                    }
-                    
                 }
-
-
-
-
-
 
                 //读取技能循环
                 wsh = (_Worksheet)shs.get_Item("技能循环");
