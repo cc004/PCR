@@ -61,6 +61,17 @@ namespace 写轴器.Properties {
         }
         
         /// <summary>
+        ///   查找类似 {
+        ///  &quot;170101&quot;: [ 1, 1, 1, 2 ]
+        ///} 的本地化字符串。
+        /// </summary>
+        internal static string UB {
+            get {
+                return ResourceManager.GetString("UB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 [
         ///  &quot;天狼噬斩&quot;,
         ///  &quot;斩刃风暴&quot;,
@@ -103,6 +114,10 @@ namespace 写轴器.Properties {
         ///  &quot;亡灵恐惧&quot;,
         ///  &quot;来吧！伊丽莎白&quot;,
         ///  &quot;七重纱护&quot;,
+        ///  &quot;凤凰之剑&quot;,
+        ///  &quot;忍法灼烧地域&quot;,
+        ///  &quot;紫电一闪&quot;,
+        ///  &quot;飞跃枪闪&quot;,
         ///   [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string UBNameDic {
@@ -140,7 +155,8 @@ namespace 写轴器.Properties {
         ///  &quot;环奈（振袖）&quot;: &quot;春环&quot;,
         ///  &quot;アヤネ（クリスマス）&quot;: &quot;圣锤&quot;,
         ///  &quot;凌音（圣诞节）&quot;: &quot;圣锤&quot;,
-        ///  &quot;可可萝（夏日）&quot;: &quot;水白&quot;,... 的本地化字符串。
+        ///  &quot;可可萝（夏日）&quot;: &quot;水白&quot;,
+        ///  &quot;ヒヨリ（ニューイヤー）&quot;: ... 的本地化字符串。
         /// </summary>
         internal static string UnitNameDic {
             get {

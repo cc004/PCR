@@ -16,6 +16,7 @@ namespace 写轴器
     {
         private readonly Dictionary<string, string> unitNames;
         private readonly List<string> UBNames;
+        private readonly Dictionary<int, List<int>> UB;
 
         public Form1()
         {
@@ -24,7 +25,7 @@ namespace 写轴器
             comboBox2.SelectedIndex = 0;
             try
             {
-                
+                UB = JsonConvert.DeserializeObject<Dictionary<int, List<int>>>(Properties.Resources.UB);
                 if (File.Exists(System.Windows.Forms.Application.StartupPath + "/UnitNameDic.json"))
                 {
                     unitNames = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(System.Windows.Forms.Application.StartupPath + "/UnitNameDic.json"));
@@ -184,19 +185,26 @@ namespace 写轴器
             List<string> units = new List<string>();
             List<int> unitIds = new List<int>();
             progressBar1.Value = 0;
-            if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)
-            {
-                return;
-            }
-
 
             string templateFilePath = System.Windows.Forms.Application.StartupPath + "/轴模板.xlsx";
-            string outFileName = saveFileDialog1.FileName;
-            if (outFileName == "" || 
-                (File.Exists(outFileName) && MessageBox.Show("文件已经存在，继续操作将会覆盖文件！", "文件已存在", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Cancel))
+            string outFilePath = textBox1.Text;
+
+            if (checkBox5.Checked == false)
             {
-                return;
+                if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)
+                {
+                    return;
+                }
+
+                outFilePath = saveFileDialog1.FileName;
+                if (outFilePath == "" ||
+                    (File.Exists(outFilePath) && MessageBox.Show("文件已经存在，继续操作将会覆盖文件！", "文件已存在", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Cancel))
+                {
+                    return;
+                }
             }
+
+
             System.Windows.Forms.Application.DoEvents();
 
             Application app = null;
@@ -321,10 +329,19 @@ namespace 写轴器
                     {
                         continue;
                     }
+
+                    string oldTimeText = "";
+
                     for (int j = i + 2; j < 9999999; j++)
                     {
                         cell = wsh.Cells[j, 1];
-                        progressBar1.Value = (int)(cell.value / 5400 * 100);
+
+
+                        if((int)(cell.value / 5400 * 100) != progressBar1.Value)
+                        {
+                            progressBar1.Value = (int)(cell.value / 5400 * 100);
+                        }
+                       
                         System.Windows.Forms.Application.DoEvents();
                         if (cell.value == 5400)
                         {
@@ -340,28 +357,32 @@ namespace 写轴器
                                 if (k != 0)
                                 {
                                     wsh2.Cells[rowId, 2] = frame;
-                                    wsh2.Cells[rowId, 3] = GetTimeText(frame);
+                                    string timeText = GetTimeText(frame);
                                     wsh2.Cells[rowId, 5] = units[k];
                                     wsh2.Cells[rowId, 8] = 0;
                                     wsh2.Range["H" + rowId.ToString()].Font.Color = Color.FromArgb(0, 0, 0);
 
+
+                                    if (oldTimeText != timeText || checkBox3.Checked == false)
+                                    {
+                                        wsh2.Cells[rowId, 3] = timeText;
+                                        oldTimeText = timeText;
+                                    }
+                                    else
+                                    {
+                                        wsh2.Cells[rowId, 3] = null;
+                                    }
+                                   
+
                                     //获取ub伤害
-                                   string str = "";
+                                    string str = "";
+                                    int pt = 0;
                                     for (int l = j - 1; (int)wsh.Cells[l, 1].Value == frame; l--)
                                     {
-                                        cell = wsh.Cells[l, 2 + k * 5];
-                                        if (cell.Value != null)
-                                        {
-                                            text = cell.Value.ToString().Replace("释放技能", "");
-                                            if (UBNames.Contains(text))
-                                            {
-                                                str += wsh.Cells[l, 4 + k * 5].Value.ToString() + "; ";
-                                            }
-
-                                        }
+                                        pt = l;
                                     }
 
-                                    for (int l = j + 1; (int)wsh.Cells[l, 1].Value == frame; l++)
+                                    for (int l = (pt != 0 ? pt : j); (int)wsh.Cells[l, 1].Value == frame; l++)
                                     {
                                         cell = wsh.Cells[l, 2 + k * 5];
                                         if (cell.Value != null)
@@ -373,21 +394,42 @@ namespace 写轴器
                                             }
                                         }
                                     }
+
+
                                     Debug.WriteLine(str);
-                                    foreach (Match mat in Regex.Matches(str, @"目标：([^\,]+),对目标造成(\d+)点(暴击)?伤害"))
+                                    string tmp = "";
+                                    int id = 0;
+                                    foreach (Match mat in Regex.Matches(str, @"(目标：([^\,]+),|/)对目标造成(\d+)点(暴击)?伤害"))
                                     {
-                                        if(mat.Groups[1].Value.ToString() == bossName)
+                                        if(mat.Groups[1].Value.ToString() != "/")
                                         {
-                                            int damage = int.Parse(mat.Groups[2].Value);
+                                            tmp = mat.Groups[2].Value.ToString();
+                                        }
+
+                             
+                                        if(tmp == bossName)
+                                        {
+                                            int damage = int.Parse(mat.Groups[3].Value);
+                                            string text2 = mat.Groups[4].Value;
+
+                                            int unitId = unitIds[k];
+
+                                            if (checkBox4.Checked && (unitId == 101601 || unitId == 107101 || (unitId == 170101 && comboBox1.Text != "最低伤害")) == false && text2 == "暴击")
+                                            {
+                                                text2 = "";
+                                                damage /= 2;
+                                            }
+
+
                                             if (comboBox1.Text == "最高伤害" && wsh2.Cells[rowId, 8].Value < damage)
                                             {
                                                 wsh2.Cells[rowId, 8].Value = damage;
-                                                wsh2.Range["H" + rowId.ToString()].Font.Color = wsh2.Cells[rowId, 4] = mat.Groups[3].Value == "暴击" ? Color.FromArgb(255, 0, 0) : Color.FromArgb(0, 0, 0);
+                                                wsh2.Range["H" + rowId.ToString()].Font.Color = wsh2.Cells[rowId, 4] = text2 == "暴击" ? Color.FromArgb(255, 0, 0) : Color.FromArgb(0, 0, 0);
                                             }
                                             else if (comboBox1.Text == "UB总伤害")
                                             {
                                                 wsh2.Cells[rowId, 8].Value = (int)wsh2.Cells[rowId, 8].Value + damage;
-                                                if (mat.Groups[3].Value == "暴击")
+                                                if (text2 == "暴击")
                                                 {
                                                     wsh2.Range["H" + rowId.ToString()].Font.Color = wsh2.Cells[rowId, 4] = Color.FromArgb(255, 0, 0);
                                                 }
@@ -395,9 +437,10 @@ namespace 写轴器
                                             if (comboBox1.Text == "最低伤害" && (wsh2.Cells[rowId, 8].Value > damage || wsh2.Cells[rowId, 8].Value == 0))
                                             {
                                                 wsh2.Cells[rowId, 8].Value = damage;
-                                                wsh2.Range["H" + rowId.ToString()].Font.Color = wsh2.Cells[rowId, 4] = mat.Groups[3].Value == "暴击" ? Color.FromArgb(255, 0, 0) : Color.FromArgb(0, 0, 0);
+                                                wsh2.Range["H" + rowId.ToString()].Font.Color = wsh2.Cells[rowId, 4] = text2 == "暴击" ? Color.FromArgb(255, 0, 0) : Color.FromArgb(0, 0, 0);
                                             }
                                         }
+                                        id++;
                                     }
                                     if (checkBox2.Checked && wsh2.Cells[rowId, 8].Value == 0)
                                     {
@@ -409,7 +452,16 @@ namespace 写轴器
                                     wsh2.Range["B" + rowId.ToString() + ":" + "N" + rowId.ToString()].Clear();
                                     wsh2.Range["B99:N99"].Copy(wsh2.Range["B" + rowId.ToString()]);
                                     wsh2.Cells[rowId, 2] = frame;
-                                    wsh2.Cells[rowId, 3] = GetTimeText(frame); ;
+                                    string timeText = GetTimeText(frame);
+                                    //if (oldTimeText != timeText || checkBox3.Checked == false)
+                                    //{
+                                        wsh2.Cells[rowId, 3] = timeText;
+                                        oldTimeText = timeText;
+                                    //}
+                                    //else
+                                    //{
+                                    //    wsh2.Cells[rowId, 3] = null;
+                                    //}
                                 }
                                 rowId++;
                                 break;
@@ -418,8 +470,8 @@ namespace 写轴器
                     }
                     wsh2.Range["B" + rowId.ToString() + ":" + "N" + rowId.ToString()].Clear();
                     wsh2.Range["B100:N100"].Copy(wsh2.Range["B" + rowId.ToString()]);
-                    wsh2.Cells[rowId, 2].Value = 5399;
-                    wsh2.Cells[rowId, 3].Value = GetTimeText(5399);
+                    wsh2.Cells[rowId, 2].Value = 5400;
+                    //wsh2.Cells[rowId, 3].Value = GetTimeText(5400);
                     rowId++;
                     wsh2.Range["B" + rowId.ToString() + ":" + "N100"].Clear();
                     wsh2.Range["C4"].Select();
@@ -428,17 +480,27 @@ namespace 写轴器
 
 
                 app.DisplayAlerts = false;
-                wsh2.SaveAs(outFileName);
+                if(textBox1.Text != outFilePath) 
+                {
+                    wsh2.SaveAs(outFilePath);
+                }
+                else
+                {
+                    wsh2.SaveAs(outFilePath);
+                }
+                
                 app.Quit();
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(app);
+                this.Enabled = true;
                 if (MessageBox.Show("是否打开文件", "生成成功", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.OK)
                 {
-                    Process.Start(outFileName);
+                    Process.Start(outFilePath);
                 }
                 return;
             }
             catch (Exception ex)
             {
+                this.Enabled = true;
                 MessageBox.Show("错误信息: " + ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             app.Quit();
