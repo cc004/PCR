@@ -47,6 +47,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>icon.ico</ApplicationIcon>
@@ -55,17 +56,16 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>658E03C764EE1C20EB70DC78C2DC1F94E11321BC</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>D727E9C4E9BFD67787134B4588D81E4D335EE2F6</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>美咲后援团写轴器_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>写轴器_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>LULU.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
@@ -128,10 +128,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="UB.json" />
-    <None Include="UBNameDic.json" />
-    <None Include="UnitNameDic.json" />
-    <None Include="轴模板.xlsx" />
+    <None Include="LULU.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

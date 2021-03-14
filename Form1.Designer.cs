@@ -48,10 +48,8 @@
             this.label8 = new System.Windows.Forms.Label();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // openFileDialog1
@@ -115,15 +113,15 @@
             // 
             this.textBox3.Location = new System.Drawing.Point(60, 99);
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(92, 21);
+            this.textBox3.Size = new System.Drawing.Size(116, 21);
             this.textBox3.TabIndex = 7;
             // 
             // button2
             // 
             this.button2.Enabled = false;
-            this.button2.Location = new System.Drawing.Point(393, 132);
+            this.button2.Location = new System.Drawing.Point(393, 136);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(187, 45);
+            this.button2.Size = new System.Drawing.Size(187, 49);
             this.button2.TabIndex = 8;
             this.button2.Text = "生成轴";
             this.button2.UseVisualStyleBackColor = true;
@@ -152,15 +150,15 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(48, 154);
+            this.progressBar1.Location = new System.Drawing.Point(60, 162);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(339, 23);
+            this.progressBar1.Size = new System.Drawing.Size(309, 23);
             this.progressBar1.TabIndex = 11;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(13, 158);
+            this.label5.Location = new System.Drawing.Point(25, 168);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(29, 12);
             this.label5.TabIndex = 12;
@@ -169,7 +167,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(328, 102);
+            this.label7.Location = new System.Drawing.Point(393, 102);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(41, 12);
             this.label7.TabIndex = 14;
@@ -183,15 +181,15 @@
             "最高伤害",
             "最低伤害",
             "UB总伤害"});
-            this.comboBox1.Location = new System.Drawing.Point(375, 99);
+            this.comboBox1.Location = new System.Drawing.Point(440, 99);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(93, 20);
+            this.comboBox1.Size = new System.Drawing.Size(130, 20);
             this.comboBox1.TabIndex = 15;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(158, 102);
+            this.label8.Location = new System.Drawing.Point(182, 102);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(65, 12);
             this.label8.TabIndex = 16;
@@ -209,9 +207,9 @@
             "mm:ss(00:58)",
             "mm-ss(00-58)",
             "帧   (1860)"});
-            this.comboBox2.Location = new System.Drawing.Point(229, 99);
+            this.comboBox2.Location = new System.Drawing.Point(253, 99);
             this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(93, 20);
+            this.comboBox2.Size = new System.Drawing.Size(116, 20);
             this.comboBox2.TabIndex = 17;
             // 
             // checkBox1
@@ -219,69 +217,39 @@
             this.checkBox1.AutoSize = true;
             this.checkBox1.Checked = true;
             this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(475, 101);
+            this.checkBox1.Location = new System.Drawing.Point(474, 69);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(96, 16);
             this.checkBox1.TabIndex = 18;
             this.checkBox1.Text = "显示角色头像";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
-            // checkBox2
+            // comboBox3
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Checked = true;
-            this.checkBox2.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox2.Location = new System.Drawing.Point(475, 69);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(96, 16);
-            this.checkBox2.TabIndex = 19;
-            this.checkBox2.Text = "零伤害UB留空";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Location = new System.Drawing.Point(60, 136);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(309, 20);
+            this.comboBox3.TabIndex = 20;
+            this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
             // 
-            // checkBox3
+            // label6
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Checked = true;
-            this.checkBox3.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox3.Location = new System.Drawing.Point(60, 132);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(96, 16);
-            this.checkBox3.TabIndex = 20;
-            this.checkBox3.Text = "移除相同时间";
-            this.checkBox3.UseVisualStyleBackColor = true;
-            // 
-            // checkBox4
-            // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Checked = true;
-            this.checkBox4.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox4.Location = new System.Drawing.Point(174, 132);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(96, 16);
-            this.checkBox4.TabIndex = 21;
-            this.checkBox4.Text = "暴击伤害修正";
-            this.checkBox4.UseVisualStyleBackColor = true;
-            // 
-            // checkBox5
-            // 
-            this.checkBox5.AutoSize = true;
-            this.checkBox5.Enabled = false;
-            this.checkBox5.Location = new System.Drawing.Point(291, 132);
-            this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(96, 16);
-            this.checkBox5.TabIndex = 22;
-            this.checkBox5.Text = "保存到原文件";
-            this.checkBox5.UseVisualStyleBackColor = true;
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(25, 139);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(29, 12);
+            this.label6.TabIndex = 19;
+            this.label6.Text = "模板";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(592, 197);
-            this.Controls.Add(this.checkBox5);
-            this.Controls.Add(this.checkBox4);
-            this.Controls.Add(this.checkBox3);
-            this.Controls.Add(this.checkBox2);
+            this.Controls.Add(this.comboBox3);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.label8);
@@ -303,7 +271,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "写轴器 by LULU";
+            this.Text = "写轴器1.2 by LULU";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -330,10 +298,8 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox checkBox3;
-        private System.Windows.Forms.CheckBox checkBox4;
-        private System.Windows.Forms.CheckBox checkBox5;
+        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.Label label6;
     }
 }
 
