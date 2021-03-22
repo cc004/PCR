@@ -244,6 +244,7 @@ namespace 写轴器
         {
             List<string> units = new List<string>();
             List<int> unitIds = new List<int>();
+            List<string> _units = new List<string>();
             progressBar1.Value = 0;
 
             string templateFilePath = System.Windows.Forms.Application.StartupPath + "/轴模板/" + comboBox3.Text;
@@ -318,6 +319,7 @@ namespace 写轴器
                     {
                         text = cell.Value.ToString();
                         unitIds.Add((int)wsh.Cells[i + 3, 1].Value);
+                        _units.Add(text);
                         if (unitNames.Keys.Contains(text))
                         {
                             units.Add(unitNames[text]);
@@ -345,7 +347,7 @@ namespace 写轴器
                         if (str != null)
                         {
                             text = wsh2.Range[str].Value == null ? "" : wsh2.Range[str].Value.ToString() + " ";
-                            wsh2.Range[str].Value = text + String.Format(setting["Rank文本"], wsh.Cells[i + 3, 4].Value);
+                            wsh2.Range[str].Value = text + String.Format(setting["星级文本"], wsh.Cells[i + 3, 4].Value);
                         }
 
 
@@ -408,6 +410,7 @@ namespace 写轴器
                 {
                     text = bossName;
                     units.Insert(0, bossName);
+                    _units.Insert(0, bossName);
                 }
                 if (setting["BOSS名称坐标"] != null)
                 {
@@ -533,7 +536,7 @@ namespace 写轴器
                                         }
 
 
-                                        if (tmp == bossName)
+                                        if (tmp != _units[k])
                                         {
                                             int damage = int.Parse(mat.Groups[3].Value);
                                             string text2 = mat.Groups[4].Value;
